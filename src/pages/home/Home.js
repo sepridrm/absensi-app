@@ -123,7 +123,7 @@ const Home = ({ form_data, props }) => {
           <Fab
             ml={getSize.widthScreen / 2.5}
             placement="bottom-left"
-            onPress={() => props.navigation.navigate('Absensi', { jamAbsen: jamAbsen, getAbsen: form_data.getAbsen })}
+            onPress={() => props.navigation.navigate('Absensi', { jamAbsen: jamAbsen, onRefresh: form_data.onRefresh })}
             position="absolute"
             icon={<Icon color="white" as={<Ionicons name="finger-print" />} size="sm" />}
           />

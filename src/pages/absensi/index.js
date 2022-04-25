@@ -9,10 +9,12 @@ import { launchCamera } from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import { apis } from '../../utils/apis';
 import API from '../../utils/axios';
+import { getDistance } from 'geolib';
 
 const index = (props) => {
     const [latlng, setLatlng] = useState(null);
     const [address, setAddress] = useState(null);
+    const [dist, setDist] = useState('Absen Sekarang');
     const [foto, setFoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const USER = props.USER
@@ -51,6 +53,7 @@ const index = (props) => {
             .then(location => {
                 setLatlng({ lat: location.latitude, lng: location.longitude });
                 getAddress(location);
+                getDistancetoOffice(location);
             })
             .catch(error => {
                 const { code, message } = error;
@@ -73,6 +76,16 @@ const index = (props) => {
             })
     }
 
+    const getDistancetoOffice = (location) => {
+        let dist = getDistance(
+            { latitude: location.latitude, longitude: location.longitude },
+            { latitude: USER.lat, longitude: USER.lng }
+        );
+
+        dist = Number(dist/1000).toFixed(2);
+        setDist("Absen "+dist+"Km diluar Kantor");
+    }
+
     const validation = () => {
         let warning;
         (!foto) ? warning = "Silahkan ambil foto" : warning = false
@@ -93,12 +106,13 @@ const index = (props) => {
         formData.append('lat', latlng.lat.toString());
         formData.append('lng', latlng.lng.toString());
         formData.append('address', address);
+        formData.append('address_status', dist < 1 ? "Didalam Area" : "Diluar Area");
         formData.append('alat', 'android');
         formData.append('foto', foto);
 
         const res = await apis.post('absen', formData, true, setLoading)
         if (res.success === 1) {
-            props.route.params.getAbsen();
+            props.route.params.onRefresh();
             setTimeout(() => {
                 props.navigation.goBack();
             }, 2000);
@@ -111,7 +125,8 @@ const index = (props) => {
         loading, setLoading,
         openCamera,
         onAbsen,
-        address
+        address,
+        dist
     }
 
     if (address == null) return <Loading />

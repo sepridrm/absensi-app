@@ -68,7 +68,7 @@ const Absensi = ({ props, form_data }) => {
 
                 <View style={{ width: '100%', paddingHorizontal: 25, marginTop: 50 }}>
                     <Button isDisabled={canAbsen ? false : true} width="100%" isLoading={form_data.loading} _spinner={{ color: "white" }} size="lg" onPress={() => form_data.onAbsen()}>
-                        <Text color="white" p="1" fontWeight="semibold">{canAbsen ? 'Absen' : jamAbsen.mulai.substring(0, 5) + ' sd ' + jamAbsen.sampai.substring(0, 5)}</Text>
+                        <Text color="white" p="1" fontWeight="semibold">{canAbsen ? form_data.dist : jamAbsen.mulai.substring(0, 5) + ' sd ' + jamAbsen.sampai.substring(0, 5)}</Text>
                     </Button>
                 </View>
             </View>

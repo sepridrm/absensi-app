@@ -34,13 +34,14 @@ const index = (props) => {
 
             let obj = {};
             res.data.forEach((element, index) => {
+                const timeAbsen = moment(element.created_at).format('HH:mm') === "00:00" ? false : true
                 if (index === 0)
-                    obj[moment(element.created_at).format('YYYY-MM-DD')] = { startingDay: true, color: '#50cebb', textColor: 'white' }
+                    obj[moment(element.created_at).format('YYYY-MM-DD')] = { startingDay: true, color: !timeAbsen ? '#c42965' : '#50cebb', textColor: 'white' }
                 else if (index === res.data.length - 1)
-                    obj[moment(element.created_at).format('YYYY-MM-DD')] = { endingDay: true, color: '#50cebb', textColor: 'white' }
+                    obj[moment(element.created_at).format('YYYY-MM-DD')] = { endingDay: true, color: !timeAbsen ? '#c42965' : '#50cebb', textColor: 'white' }
                 else{
                     if(!obj[moment(element.created_at).format('YYYY-MM-DD')])
-                        obj[moment(element.created_at).format('YYYY-MM-DD')] = { color: '#70d7c7', textColor: 'white' }
+                        obj[moment(element.created_at).format('YYYY-MM-DD')] = { color: !timeAbsen ? '#c42965' : '#50cebb', textColor: 'white' }
                 }
             });
 
