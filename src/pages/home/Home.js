@@ -22,13 +22,13 @@ const Home = ({ form_data, props }) => {
   };
 
   useEffect(() => {
-    let timeDif = '24:00';
+    let timeDif = 24;
     USER.jam_kerja.forEach(element => {
       let temp = moment(dt).format("YYYY/MM/DD") + " " + element.mulai;
 
-      if (moment(moment(temp).diff(moment(dt).format("YYYY/MM/DD HH:mm:ss"))).format("HH:mm") < timeDif) {
+      if (Math.abs(moment(temp).diff(moment(dt).format("YYYY/MM/DD HH:mm:ss"), 'hours')) < timeDif) {
         setJamAbsen(element);
-        timeDif = moment(moment(temp).diff(moment(dt).format("YYYY/MM/DD HH:mm:ss"))).format("HH:mm");
+        timeDif = Math.abs(moment(temp).diff(moment(dt).format("YYYY/MM/DD HH:mm:ss"), 'hours'));
       }
     });
 

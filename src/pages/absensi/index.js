@@ -10,6 +10,7 @@ import ImageResizer from 'react-native-image-resizer';
 import { apis } from '../../utils/apis';
 import API from '../../utils/axios';
 import { getDistance } from 'geolib';
+import RNMockLocationDetector from "react-native-mock-location-detector";
 
 const index = (props) => {
     const [latlng, setLatlng] = useState(null);
@@ -17,8 +18,10 @@ const index = (props) => {
     const [dist, setDist] = useState('Absen Sekarang');
     const [foto, setFoto] = useState(null);
     const [loading, setLoading] = useState(false);
-    const USER = props.USER
-    const jamAbsen = props.route.params.jamAbsen
+    const USER = props.USER;
+    const jamAbsen = props.route.params.jamAbsen;
+
+    const [isMocked, setIsMoked] = useState(false);
 
     useEffect(() => {
         getLocation();
@@ -54,12 +57,23 @@ const index = (props) => {
                 setLatlng({ lat: location.latitude, lng: location.longitude });
                 getAddress(location);
                 getDistancetoOffice(location);
+                getIsMoked(location)
             })
             .catch(error => {
                 const { code, message } = error;
                 console.log(code, message);
                 Toast.show({ type: toast.type, position: toast.position, text1: 'Silahkan hidupkan GPS Anda' })
             })
+    }
+
+    const getIsMoked = async (location) => {
+        await RNMockLocationDetector.checkMockLocationProvider().then(res => {
+            console.log(res);
+            setIsMoked(res)
+            if(res){
+                Toast.show({ type: toast.type, position: toast.position, text1: 'Perangkat terdeteksi menggunakan lokasi palsu!' })
+            }
+        })
     }
 
     const getAddress = (location) => {
@@ -82,8 +96,8 @@ const index = (props) => {
             { latitude: USER.lat, longitude: USER.lng }
         );
 
-        dist = Number(dist/1000).toFixed(2);
-        setDist("Absen "+dist+"Km diluar Kantor");
+        dist = Number(dist / 1000).toFixed(2);
+        setDist("Absen " + dist + "Km diluar Kantor");
     }
 
     const validation = () => {
@@ -126,7 +140,8 @@ const index = (props) => {
         openCamera,
         onAbsen,
         address,
-        dist
+        dist,
+        isMocked
     }
 
     if (address == null) return <Loading />

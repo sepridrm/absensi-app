@@ -1,4 +1,4 @@
-package com.absensiapp;
+package com.absensi.ftunsri;
 
 import com.facebook.react.ReactActivity;
 

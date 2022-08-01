@@ -1,4 +1,4 @@
-package com.absensiapp;
+package com.absensi.ftunsri;
 
 import android.app.Application;
 import android.content.Context;

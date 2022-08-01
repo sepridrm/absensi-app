@@ -12,9 +12,9 @@ const Absensi = ({ props, form_data }) => {
     const [dt, setDt] = useState(new Date().toLocaleString());
 
     let time_now = moment(dt).format("HH:mm:ss");
-    let canAbsen = false;
-    if (jamAbsen.mulai < time_now && jamAbsen.sampai > time_now)
-        canAbsen = true;
+    // let canAbsen = true;
+    // if (jamAbsen.mulai < time_now && jamAbsen.sampai > time_now)
+    //     canAbsen = true;
 
     useEffect(() => {
         let secTimer = setInterval(() => {
@@ -66,9 +66,15 @@ const Absensi = ({ props, form_data }) => {
                     </Marker>
                 </MapView>
 
-                <View style={{ width: '100%', paddingHorizontal: 25, marginTop: 50 }}>
+                {/* <View style={{ width: '100%', paddingHorizontal: 25, marginTop: 50 }}>
                     <Button isDisabled={canAbsen ? false : true} width="100%" isLoading={form_data.loading} _spinner={{ color: "white" }} size="lg" onPress={() => form_data.onAbsen()}>
                         <Text color="white" p="1" fontWeight="semibold">{canAbsen ? form_data.dist : jamAbsen.mulai.substring(0, 5) + ' sd ' + jamAbsen.sampai.substring(0, 5)}</Text>
+                    </Button>
+                </View> */}
+
+                <View style={{ width: '100%', paddingHorizontal: 25, marginTop: 50 }}>
+                    <Button isDisabled={form_data.isMocked} width="100%" isLoading={form_data.loading} _spinner={{ color: "white" }} size="lg" onPress={() => form_data.onAbsen()}>
+                        <Text color="white" p="1" fontWeight="semibold">{form_data.isMocked ? "Terdeteksi lokasi palsu" : form_data.dist}</Text>
                     </Button>
                 </View>
             </View>
